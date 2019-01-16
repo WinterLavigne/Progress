@@ -2,37 +2,40 @@
 
 open Business.Models
 open System
+open Progress.Repository
 
 type IPiecesService =
     abstract member GetAll: Piece list
     abstract member Get: Guid -> Piece option
 
-type PiecesService() = 
+type PiecesService(repository: IPiecesRepository) = 
     
-    let pieces = [
-            {
-                Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e8")
-                Name = "Test Name 1";
-                Composer = "Test Composer 1";
-                PercentCompleted = 0
-            }
-            {
-                Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e1")
-                Name = "Test Name 2";
-                Composer = "Test Composer 2";
-                PercentCompleted = 0
-            }
-            ]
-
     interface IPiecesService with
 
-        member __.GetAll = pieces
+        member __.GetAll = 
+             repository.GetAll |> List.map (fun x -> {
+                    Id = x.Id
+                    Name = x.Name
+                    Composer = x.Composer
+                    PercentCompleted = 0
+                }) 
         member __.Get id = 
-            if (List.exists (fun x -> x.Id.Equals(id)) pieces)
-            then 
-                let result = List.find (fun x -> x.Id.Equals(id)) pieces
-                Some result
-            else None
+            let result = repository.Get id
+            match result with
+            | Some x -> Some({
+                Id = x.Id
+                Name = x.Name
+                Composer = x.Composer
+                PercentCompleted = 0
+                })
+            | None -> None
+
+
+            //if (List.exists (fun x -> x.Id.Equals(id)) pieces)
+            //then 
+            //    let result = List.find (fun x -> x.Id.Equals(id)) pieces
+            //    Some result
+            //else None
             
 
 

@@ -10,6 +10,7 @@ open Giraffe
 open Progress.Api.HttpHandlers
 open Progress.Business
 open Giraffe
+open Progress.Repository
 
 // ---------------------------------
 // Web app
@@ -55,6 +56,7 @@ let configureApp (app : IApplicationBuilder) =
         .UseGiraffe(webApp)
 
 let configureServices (services : IServiceCollection) =
+    services.AddTransient<IPiecesRepository, PiecesRepository>() |> ignore
     services.AddTransient<IPiecesService, PiecesService>() |> ignore
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore

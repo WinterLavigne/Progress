@@ -5,13 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Models\Piece.fs" />
-    <Compile Include="Services\PiecesService.fs" />
+    <Compile Include="PiecesRepository.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Progress.Domain\Progress.Domain.fsproj" />
-    <ProjectReference Include="..\Progress.Repository\Progress.Repository.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
