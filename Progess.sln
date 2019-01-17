@@ -5,15 +5,19 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Progress.Api", "Progress.Api\Progress.Api.fsproj", "{5F10FB4F-0D86-4505-82AF-C49C1A269A01}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Progress.Api.Tests", "Progress.Api.Tests\Progress.Api.Tests.fsproj", "{C0F72F31-C1E1-40A7-8394-C14E824DE1AB}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Progress.Api.Tests", "Progress.Api.Tests\Progress.Api.Tests.fsproj", "{C0F72F31-C1E1-40A7-8394-C14E824DE1AB}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Progress.Business", "Progress.Business\Progress.Business.fsproj", "{C1AA9304-8335-469D-B890-F5CD4749E3CC}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Progress.Business", "Progress.Business\Progress.Business.fsproj", "{C1AA9304-8335-469D-B890-F5CD4749E3CC}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Progress.Business.Tests", "Progress.Business.Tests\Progress.Business.Tests.fsproj", "{F1083149-A1D3-4EE2-B1FB-BD47FADDDDDF}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Progress.Business.Tests", "Progress.Business.Tests\Progress.Business.Tests.fsproj", "{F1083149-A1D3-4EE2-B1FB-BD47FADDDDDF}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Progress.Repository", "Progress.Repository\Progress.Repository.fsproj", "{642B7F4E-C8EF-4616-A421-95DE71B34B25}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Progress.Repository", "Progress.Repository\Progress.Repository.fsproj", "{642B7F4E-C8EF-4616-A421-95DE71B34B25}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Progress.Domain", "Progress.Domain\Progress.Domain.fsproj", "{D06CDA75-9B54-4C3C-8075-AFC4E3E4CFFA}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Progress.Domain", "Progress.Domain\Progress.Domain.fsproj", "{D06CDA75-9B54-4C3C-8075-AFC4E3E4CFFA}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Progress.Context", "Progress.Context\Progress.Context.fsproj", "{EB8A9A71-ACA3-4B02-B7A0-375308C3882F}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Progress.Database", "Progress.Database\Progress.Database.sqlproj", "{961DB88A-C178-4783-A528-83B70500993B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,16 @@ Global
 		{D06CDA75-9B54-4C3C-8075-AFC4E3E4CFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D06CDA75-9B54-4C3C-8075-AFC4E3E4CFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D06CDA75-9B54-4C3C-8075-AFC4E3E4CFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB8A9A71-ACA3-4B02-B7A0-375308C3882F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB8A9A71-ACA3-4B02-B7A0-375308C3882F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB8A9A71-ACA3-4B02-B7A0-375308C3882F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB8A9A71-ACA3-4B02-B7A0-375308C3882F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{961DB88A-C178-4783-A528-83B70500993B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{961DB88A-C178-4783-A528-83B70500993B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{961DB88A-C178-4783-A528-83B70500993B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{961DB88A-C178-4783-A528-83B70500993B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{961DB88A-C178-4783-A528-83B70500993B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{961DB88A-C178-4783-A528-83B70500993B}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

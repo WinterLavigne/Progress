@@ -58,6 +58,10 @@ module Tests
         path
         |> client.GetAsync
 
+    let post (client : HttpClient) (path : string) (piece: NewPiece)=
+        path
+        |> client.PostAsync(path, new StreamContent(stream)) 
+
     let isStatus (code : HttpStatusCode) (response : HttpResponseMessage) =
         Assert.Equal(code, response.StatusCode)
         response
@@ -119,6 +123,20 @@ module Tests
             let! content =
                 response
                 |> isStatus HttpStatusCode.OK
+                |> readText
+        
+            Assert.Equal("{\"id\":\"54cc3236-1ff6-407a-bb47-34fe729958e1\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0}", content)
+        }
+
+    [<Fact>]
+    let ``Add Piece returns Piece`` () =
+        task {
+            use server = new TestServer(createHost())
+            use client = server.CreateClient()
+            let! response = post client "/api/pieces" {Name}
+            let! content =
+                response
+                |> isStatus HttpStatusCode.Created
                 |> readText
         
             Assert.Equal("{\"id\":\"54cc3236-1ff6-407a-bb47-34fe729958e1\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0}", content)

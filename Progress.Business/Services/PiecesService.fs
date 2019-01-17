@@ -7,6 +7,7 @@ open Progress.Repository
 type IPiecesService =
     abstract member GetAll: Piece list
     abstract member Get: Guid -> Piece option
+    abstract member Add: NewPiece -> Piece option
 
 type PiecesService(repository: IPiecesRepository) = 
     
@@ -16,7 +17,7 @@ type PiecesService(repository: IPiecesRepository) =
              repository.GetAll |> List.map (fun x -> {
                     Id = x.Id
                     Name = x.Name
-                    Composer = x.Composer
+                    Composer = "To implement"
                     PercentCompleted = 0
                 }) 
         member __.Get id = 
@@ -25,10 +26,17 @@ type PiecesService(repository: IPiecesRepository) =
             | Some x -> Some({
                 Id = x.Id
                 Name = x.Name
-                Composer = x.Composer
+                Composer = "To implement"
                 PercentCompleted = 0
                 })
             | None -> None
+        member __.Add newPiece = Some ({ 
+            Id = Guid.NewGuid()
+            Name = "To be implemented"
+            Composer = "To be implemented"
+            PercentCompleted = 0
+            })
+            
 
 
             //if (List.exists (fun x -> x.Id.Equals(id)) pieces)

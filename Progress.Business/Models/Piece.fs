@@ -9,3 +9,6 @@ type public Piece = {
     Composer: string
     PercentCompleted: int
  }
+ and NewPiece = {
+    Name: string
+ }

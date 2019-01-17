@@ -11,6 +11,7 @@ open Progress.Api.HttpHandlers
 open Progress.Business
 open Giraffe
 open Progress.Repository
+open Progress.Context
 
 // ---------------------------------
 // Web app
@@ -24,6 +25,9 @@ let webApp =
                     route  "/" >=> text "index"
                     route "/pieces" >=> handleGetPieces
                     routef "/pieces/%O" handleGetPiece
+                ]
+                POST >=> choose [
+                    route "/pieces" >=> handleAddPiece
                 ]
             ])
         setStatusCode 404 >=> text "Not Found" ]
@@ -56,8 +60,9 @@ let configureApp (app : IApplicationBuilder) =
         .UseGiraffe(webApp)
 
 let configureServices (services : IServiceCollection) =
-    services.AddTransient<IPiecesRepository, PiecesRepository>() |> ignore
-    services.AddTransient<IPiecesService, PiecesService>() |> ignore
+    services.AddScoped<ProgressContext, ProgressContext>() |> ignore
+    services.AddScoped<IPiecesRepository, PiecesRepository>() |> ignore
+    services.AddScoped<IPiecesService, PiecesService>() |> ignore
     services.AddCors()    |> ignore
     services.AddGiraffe() |> ignore
 

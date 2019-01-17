@@ -31,4 +31,16 @@ module HttpHandlers =
                     | None -> RequestErrors.NOT_FOUND "Id not found.") next ctx
             }
 
+    let handleAddPiece =
+        fun (next : HttpFunc) (ctx : HttpContext) ->
+            task {
+                let! _model = ctx.BindFormAsync<NewPiece>()
+                let service = ctx.GetService<IPiecesService>()
+                let result = service.Add _model
+                
+                return!
+                    (match result with
+                    | Some r -> Successful.OK r
+                    | None -> RequestErrors.NOT_FOUND "Id not found.") next ctx
+            }
     

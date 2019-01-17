@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="PiecesRepository.fs" />
+    <Compile Include="ProgressContext.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Progress.Context\Progress.Context.fsproj" />
     <ProjectReference Include="..\Progress.Domain\Progress.Domain.fsproj" />
   </ItemGroup>
 

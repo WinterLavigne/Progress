@@ -6,6 +6,5 @@ open System
 type public Piece = {
     Id : Guid
     Name: string
-    Composer: string
    
  }
