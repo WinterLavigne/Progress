@@ -27,7 +27,7 @@ module HttpHandlers =
                 return!
                     (match result with
                     | Some r -> Successful.OK r
-                    | None -> RequestErrors.NOT_FOUND "Id not found.") next ctx
+                    | None -> Successful.NO_CONTENT) next ctx
             }
 
     let handleAddPiece =

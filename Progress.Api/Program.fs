@@ -67,12 +67,6 @@ let configureApp (app : IApplicationBuilder) =
         .UseCors(configureCors)
         .UseGiraffe(webApp)
 
-let configureAppConfiguration  (context: WebHostBuilderContext) (config: IConfigurationBuilder) =  
-    config
-        .AddJsonFile("appsettings.json",false,true)
-        .AddJsonFile(sprintf "appsettings.%s.json" context.HostingEnvironment.EnvironmentName ,true)
-        .AddEnvironmentVariables() |> ignore
-
 [<Literal>]
 let appSettingsFile = "./appsettings.winter.json" // this should be your own appsettings file!!!
 type Sample = JsonProvider<appSettingsFile>
@@ -98,7 +92,6 @@ let main _ =
     WebHostBuilder()
         .UseKestrel()
         .UseIISIntegration()
-        .ConfigureAppConfiguration(configureAppConfiguration)
         .Configure(Action<IApplicationBuilder> configureApp)
         .ConfigureServices(configureServices)
         .ConfigureLogging(configureLogging)

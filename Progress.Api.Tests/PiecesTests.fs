@@ -110,17 +110,17 @@ module Tests
         }
 
     [<Fact>]
-    let ``Get Piece returns NotFound`` () =
+    let ``Get Piece returns NoContent`` () =
         task {
             use server = new TestServer(createHost())
             use client = server.CreateClient()
             let! response = get client "/api/pieces/54cc3236-1ff6-407a-bb47-34fe729958e0"
             let! content =
                 response
-                |> isStatus HttpStatusCode.NotFound
+                |> isStatus HttpStatusCode.NoContent
                 |> readText
         
-            Assert.Equal("\"Id not found.\"", content)
+            Assert.Equal("", content)
         }
 
     [<Fact>]

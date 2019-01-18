@@ -30,20 +30,20 @@ type PiecesService(repository: IPiecesRepository) =
                 PercentCompleted = 0
                 })
             | None -> None
-        member __.Add newPiece = Some ({ 
-            Id = Guid.NewGuid()
-            Name = newPiece.Name
-            Composer = "To be implemented"
-            PercentCompleted = 0
-            })
-            
-
-
-            //if (List.exists (fun x -> x.Id.Equals(id)) pieces)
-            //then 
-            //    let result = List.find (fun x -> x.Id.Equals(id)) pieces
-            //    Some result
-            //else None
+        member __.Add newPiece = 
+            let result = repository.Add {
+                Id = Guid.NewGuid()
+                Name = newPiece.Name
+                }
+            match result with
+            | Some x -> Some({
+                Id = x.Id
+                Name = x.Name
+                Composer = "To be implemented"
+                PercentCompleted = 0
+                })
+            | None -> None
+           
             
 
 
