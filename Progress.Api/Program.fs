@@ -12,10 +12,18 @@ open Progress.Business
 open Giraffe
 open Progress.Repository
 open Progress.Context
+open Microsoft.EntityFrameworkCore
+open System.Configuration
+open Microsoft.Extensions.Configuration
+open System.Linq
+open FsConfig
+open System.IO
+open FSharp.Data
 
 // ---------------------------------
 // Web app
 // ---------------------------------
+
 
 let webApp =
     choose [
@@ -59,8 +67,22 @@ let configureApp (app : IApplicationBuilder) =
         .UseCors(configureCors)
         .UseGiraffe(webApp)
 
+let configureAppConfiguration  (context: WebHostBuilderContext) (config: IConfigurationBuilder) =  
+    config
+        .AddJsonFile("appsettings.json",false,true)
+        .AddJsonFile(sprintf "appsettings.%s.json" context.HostingEnvironment.EnvironmentName ,true)
+        .AddEnvironmentVariables() |> ignore
+
+[<Literal>]
+let appSettingsFile = "./appsettings.json"
+type Sample = JsonProvider<appSettingsFile>
+
 let configureServices (services : IServiceCollection) =
-    services.AddScoped<ProgressContext, ProgressContext>() |> ignore
+   
+    let content = Sample.Parse(File.ReadAllText(appSettingsFile))
+    let conn = content.ConnectionString
+
+    services.AddDbContext<ProgressContext>(fun options -> options.UseSqlServer(conn) |> ignore) |> ignore
     services.AddScoped<IPiecesRepository, PiecesRepository>() |> ignore
     services.AddScoped<IPiecesService, PiecesService>() |> ignore
     services.AddCors()    |> ignore
@@ -76,6 +98,7 @@ let main _ =
     WebHostBuilder()
         .UseKestrel()
         .UseIISIntegration()
+        .ConfigureAppConfiguration(configureAppConfiguration)
         .Configure(Action<IApplicationBuilder> configureApp)
         .ConfigureServices(configureServices)
         .ConfigureLogging(configureLogging)

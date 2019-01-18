@@ -10,8 +10,8 @@ type ProgressContext =
     new() = { inherit DbContext() }
     new(options: DbContextOptions<ProgressContext>) = { inherit DbContext(options) }
     
-    override __.OnConfiguring optionsBuilder = 
-        optionsBuilder.UseSqlServer("Server=.,1433;Initial Catalog=Progress;Persist Security Info=False;User ID={userid};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;") |> ignore
+    //override __.OnConfiguring optionsBuilder = 
+    //    optionsBuilder.UseSqlServer("Server=.,1433;Initial Catalog=Progress;Persist Security Info=False;User ID={userid};Password={password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;") |> ignore
 
 
     [<DefaultValue>]
