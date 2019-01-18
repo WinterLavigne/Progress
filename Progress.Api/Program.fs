@@ -74,7 +74,7 @@ let configureAppConfiguration  (context: WebHostBuilderContext) (config: IConfig
         .AddEnvironmentVariables() |> ignore
 
 [<Literal>]
-let appSettingsFile = "./appsettings.json"
+let appSettingsFile = "./appsettings.winter.json" // this should be your own appsettings file!!!
 type Sample = JsonProvider<appSettingsFile>
 
 let configureServices (services : IServiceCollection) =
