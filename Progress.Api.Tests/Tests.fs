@@ -24,29 +24,29 @@ module Tests
         interface IPiecesService with
             member __.GetAll = [
                 {
-                    Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e8")
+                    Id = Guid("00000000-0000-0000-0000-000000000001")
                     Name = "Test Name 1";
                     Composer = "Test Composer 1";
                     PercentCompleted = 0
                 }
                 {
-                    Id = Guid("68f519a6-8c1e-4288-a744-9103e1c50b1b")
+                    Id = Guid("00000000-0000-0000-0000-000000000002")
                     Name = "Test Name 2";
                     Composer = "Test Composer 2";
                     PercentCompleted = 0
                 }
                 ]
             member __.Get id = 
-                if (id.Equals(Guid("54cc3236-1ff6-407a-bb47-34fe729958e1")))
+                if (id.Equals(Guid("00000000-0000-0000-0000-000000000003")))
                 then Some  {
-                    Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e1")
+                    Id = Guid("00000000-0000-0000-0000-000000000003")
                     Name = "Test Name 1";
                     Composer = "Test Composer 1";
                     PercentCompleted = 0
                     }
                 else None
             member __.Add newPiece = Some ({ 
-                Id = Guid.NewGuid()
+                Id = Guid("00000000-0000-0000-0000-000000000004")
                 Name = newPiece.Name
                 Composer = "To be implemented"
                 PercentCompleted = 0
@@ -106,7 +106,7 @@ module Tests
                 |> isStatus HttpStatusCode.OK
                 |> readText
         
-            Assert.Equal("[{\"id\":\"54cc3236-1ff6-407a-bb47-34fe729958e8\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0},{\"id\":\"68f519a6-8c1e-4288-a744-9103e1c50b1b\",\"name\":\"Test Name 2\",\"composer\":\"Test Composer 2\",\"percentCompleted\":0}]", content)
+            Assert.Equal("[{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0},{\"id\":\"00000000-0000-0000-0000-000000000002\",\"name\":\"Test Name 2\",\"composer\":\"Test Composer 2\",\"percentCompleted\":0}]", content)
         }
 
     [<Fact>]
@@ -128,13 +128,13 @@ module Tests
         task {
             use server = new TestServer(createHost())
             use client = server.CreateClient()
-            let! response = get client "/api/pieces/54cc3236-1ff6-407a-bb47-34fe729958e1"
+            let! response = get client "/api/pieces/00000000-0000-0000-0000-000000000003"
             let! content =
                 response
                 |> isStatus HttpStatusCode.OK
                 |> readText
         
-            Assert.Equal("{\"id\":\"54cc3236-1ff6-407a-bb47-34fe729958e1\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0}", content)
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000003\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0}", content)
         }
 
     [<Fact>]
@@ -151,5 +151,5 @@ module Tests
                 |> isStatus HttpStatusCode.Created
                 |> readText
         
-            Assert.Equal("{\"id\":\"54cc3236-1ff6-407a-bb47-34fe729958e1\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0}", content)
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000004\",\"name\":\"Some Name\",\"composer\":\"To be implemented\",\"percentCompleted\":0}", content)
         }

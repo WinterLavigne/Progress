@@ -33,7 +33,7 @@ module HttpHandlers =
     let handleAddPiece =
         fun (next : HttpFunc) (ctx : HttpContext) ->
             task {
-                let! _model = ctx.BindModelAsync<NewPiece>()
+                let! _model = ctx.BindJsonAsync<NewPiece>()
                 let service = ctx.GetService<IPiecesService>()
                 let result = service.Add _model
                 
