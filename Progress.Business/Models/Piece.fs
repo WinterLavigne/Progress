@@ -8,7 +8,9 @@ type public Piece = {
     Name: string
     Composer: string
     PercentCompleted: int
- }
- and NewPiece = {
+    }
+
+[<CLIMutable>]
+type public NewPiece = {
     Name: string
- }
+    }

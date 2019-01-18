@@ -14,7 +14,10 @@ module Tests
     open FSharp.Control.Tasks.V2.ContextInsensitive
     open Xunit
     open Progress.Business
+    open Business.Models
     open Giraffe
+    open Newtonsoft.Json
+    open System.Text
 
     type TestPiecesService() = 
     
@@ -42,6 +45,12 @@ module Tests
                     PercentCompleted = 0
                     }
                 else None
+            member __.Add newPiece = Some ({ 
+                Id = Guid.NewGuid()
+                Name = newPiece.Name
+                Composer = "To be implemented"
+                PercentCompleted = 0
+                })
 
     let configureTestServices (services : IServiceCollection) =
         services.AddTransient<IPiecesService, TestPiecesService>() |> ignore
@@ -58,9 +67,9 @@ module Tests
         path
         |> client.GetAsync
 
-    let post (client : HttpClient) (path : string) (piece: NewPiece)=
-        path
-        |> client.PostAsync(path, new StreamContent(stream)) 
+    let post (client : HttpClient) (path : string) (piece: NewPiece) =
+        let postData = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(piece))
+        client.PostAsync (path, new StreamContent(new MemoryStream(postData)))
 
     let isStatus (code : HttpStatusCode) (response : HttpResponseMessage) =
         Assert.Equal(code, response.StatusCode)
@@ -131,9 +140,12 @@ module Tests
     [<Fact>]
     let ``Add Piece returns Piece`` () =
         task {
+            let newPiece = {
+                    Name = "Some Name"
+                }
             use server = new TestServer(createHost())
             use client = server.CreateClient()
-            let! response = post client "/api/pieces" {Name}
+            let! response = post client "/api/pieces" newPiece
             let! content =
                 response
                 |> isStatus HttpStatusCode.Created

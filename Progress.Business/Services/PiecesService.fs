@@ -32,7 +32,7 @@ type PiecesService(repository: IPiecesRepository) =
             | None -> None
         member __.Add newPiece = Some ({ 
             Id = Guid.NewGuid()
-            Name = "To be implemented"
+            Name = newPiece.Name
             Composer = "To be implemented"
             PercentCompleted = 0
             })
