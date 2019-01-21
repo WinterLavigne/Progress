@@ -5,39 +5,52 @@ open Xunit
 open Progress.Business
 open FSharp.Control.Tasks.V2
 open Progress.Repository
-open Progress.Context
-open Progress.Domain
-open Progress.Business
 open Microsoft.EntityFrameworkCore
 
-let createServiceWithDatabaseObjects (name: string)=
-    let context = new DbContextOptionsBuilder<ProgressContext>()
-    let options = context.UseInMemoryDatabase(name).Options
-    let context = new ProgressContext(options)
-    context.Pieces.Add({
+type MockPiecesRepository() =
+    
+    let mutable adds = 0
+    let mutable getAlls = 0
+    let mutable gets = 0
+    let db = [
+            {
                 Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e8")
                 Name = "Test Name 1"
                 //Composer = "Test Composer 1"
-            }) |> ignore
-    context.Pieces.Add({
+            }
+            {
                 Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e1")
                 Name = "Test Name 2"
                 //Composer = "Test Composer 2"
-            })|> ignore
-    context.SaveChanges() |> ignore
+            }]
 
-    let _sut = PiecesService(PiecesRepository(context)) :> IPiecesService
-    _sut
+    member __.Adds = adds    
+    member __.GetAlls = getAlls
+    member __.Gets = gets
 
-let createService (name: string) = 
-    let result = createServiceWithDatabaseObjects name
-    result
+    
+
+    interface IPiecesRepository with
+        member __.GetAll = db
+        member __.Get id = 
+            let list = List.filter (fun x -> x.Id.Equals(id)) db
+            match list with
+            | [] -> None
+            | l -> Some(List.head l)
+            
+        member __.Add piece = 
+            adds <- adds + 1
+            Some({ 
+                Id = Guid.NewGuid()
+                Name = "From Repo"
+                }) 
 
 
 [<Fact>]
 let ``GetAll returns all pieces`` () =
     task {  
-            let _sut = createService "GetAll returns all pieces"
+            let _sut = PiecesService(MockPiecesRepository()) :> IPiecesService
+           // let _sut = createService "GetAll returns all pieces"
             let result = _sut.GetAll
 
             Assert.Equal(2, result.Length)
@@ -46,7 +59,7 @@ let ``GetAll returns all pieces`` () =
 [<Fact>]
 let ``Get returns none when id does not exist`` () =
     task {
-            let _sut = createService "Get returns none when id does not exist"
+            let _sut = PiecesService(MockPiecesRepository()) :> IPiecesService
             let id =  Guid.NewGuid()
             let result = _sut.Get id
 
@@ -56,7 +69,7 @@ let ``Get returns none when id does not exist`` () =
 [<Fact>]
 let ``Get returns some when id does exist`` () =
     task {
-            let _sut = createService "Get returns some when id does exist"
+            let _sut = PiecesService(MockPiecesRepository()) :> IPiecesService
             let id =  Guid("54cc3236-1ff6-407a-bb47-34fe729958e1")
             let result = _sut.Get id
 
@@ -66,22 +79,12 @@ let ``Get returns some when id does exist`` () =
 [<Fact>]
 let ``Add returns new piece`` () =
     task {
-            let mock = {
-                new IPiecesRepository with
-                    member __. GetAll = []
-                    member __.Get id = Some({
-                            Id = Guid.NewGuid()
-                            Name = "Test" })   
-                    member __.Add piece = Some({ 
-                            Id = Guid.NewGuid()
-                            Name = "From Repo"
-                            })
-            } 
-
-            let _sut = PiecesService(mock) :> IPiecesService
+            let repo = MockPiecesRepository()
+            let _sut = PiecesService(repo) :> IPiecesService
 
             let result = _sut.Add({Name = "Add returns new piece"})
             
             Assert.True(result.IsSome)
             Assert.Equal("From Repo", result.Value.Name)
+            Assert.Equal(1, repo.Adds)
         }

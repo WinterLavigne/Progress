@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Progress.Domain\Progress.Domain.fsproj" />
     <ProjectReference Include="..\Progress.Repository\Progress.Repository.fsproj" />
   </ItemGroup>
 

@@ -26,14 +26,14 @@ module Tests
                 {
                     Id = Guid("00000000-0000-0000-0000-000000000001")
                     Name = "Test Name 1";
-                    Composer = "Test Composer 1";
-                    PercentCompleted = 0
+                    //Composer = "Test Composer 1";
+                    //PercentCompleted = 0
                 }
                 {
                     Id = Guid("00000000-0000-0000-0000-000000000002")
                     Name = "Test Name 2";
-                    Composer = "Test Composer 2";
-                    PercentCompleted = 0
+                    //Composer = "Test Composer 2";
+                    //PercentCompleted = 0
                 }
                 ]
             member __.Get id = 
@@ -41,15 +41,15 @@ module Tests
                 then Some  {
                     Id = Guid("00000000-0000-0000-0000-000000000003")
                     Name = "Test Name 1";
-                    Composer = "Test Composer 1";
-                    PercentCompleted = 0
+                    //Composer = "Test Composer 1";
+                    //PercentCompleted = 0
                     }
                 else None
             member __.Add newPiece = Some ({ 
                 Id = Guid("00000000-0000-0000-0000-000000000004")
                 Name = newPiece.Name
-                Composer = "To be implemented"
-                PercentCompleted = 0
+                //Composer = "To be implemented"
+                //PercentCompleted = 0
                 })
 
     let configureTestServices (services : IServiceCollection) =
@@ -67,7 +67,7 @@ module Tests
         path
         |> client.GetAsync
 
-    let post (client : HttpClient) (path : string) (piece: NewPiece) =
+    let post (client : HttpClient) (path : string) (piece: AddPiece) =
         let postData = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(piece))
         client.PostAsync (path, new StreamContent(new MemoryStream(postData)))
 
@@ -106,7 +106,7 @@ module Tests
                 |> isStatus HttpStatusCode.OK
                 |> readText
         
-            Assert.Equal("[{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0},{\"id\":\"00000000-0000-0000-0000-000000000002\",\"name\":\"Test Name 2\",\"composer\":\"Test Composer 2\",\"percentCompleted\":0}]", content)
+            Assert.Equal("[{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Test Name 1\"},{\"id\":\"00000000-0000-0000-0000-000000000002\",\"name\":\"Test Name 2\"}]", content)
         }
 
     [<Fact>]
@@ -134,7 +134,7 @@ module Tests
                 |> isStatus HttpStatusCode.OK
                 |> readText
         
-            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000003\",\"name\":\"Test Name 1\",\"composer\":\"Test Composer 1\",\"percentCompleted\":0}", content)
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000003\",\"name\":\"Test Name 1\"}", content)
         }
 
     [<Fact>]
@@ -151,5 +151,5 @@ module Tests
                 |> isStatus HttpStatusCode.Created
                 |> readText
         
-            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000004\",\"name\":\"Some Name\",\"composer\":\"To be implemented\",\"percentCompleted\":0}", content)
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000004\",\"name\":\"Some Name\"}", content)
         }

@@ -1,13 +1,12 @@
-﻿module Progress.Business
+﻿namespace Progress.Business
 
-open Business.Models
 open System
 open Progress.Repository
 
 type IPiecesService =
-    abstract member GetAll: Piece list
-    abstract member Get: Guid -> Piece option
-    abstract member Add: NewPiece -> Piece option
+    abstract member GetAll: Business.Models.GetPiece list
+    abstract member Get: Guid -> Business.Models.GetPiece option
+    abstract member Add: Business.Models.AddPiece -> Business.Models.GetPiece option
 
 type PiecesService(repository: IPiecesRepository) = 
     
@@ -17,8 +16,8 @@ type PiecesService(repository: IPiecesRepository) =
              repository.GetAll |> List.map (fun x -> {
                     Id = x.Id
                     Name = x.Name
-                    Composer = "To implement"
-                    PercentCompleted = 0
+                    //Composer = "To implement"
+                    //PercentCompleted = 0
                 }) 
         member __.Get id = 
             let result = repository.Get id
@@ -26,21 +25,20 @@ type PiecesService(repository: IPiecesRepository) =
             | Some x -> Some({
                 Id = x.Id
                 Name = x.Name
-                Composer = "To implement"
-                PercentCompleted = 0
+                //Composer = "To implement"
+                //PercentCompleted = 0
                 })
             | None -> None
         member __.Add newPiece = 
             let result = repository.Add {
-                Id = Guid.NewGuid()
                 Name = newPiece.Name
                 }
             match result with
             | Some x -> Some({
                 Id = x.Id
                 Name = x.Name
-                Composer = "To be implemented"
-                PercentCompleted = 0
+                //Composer = "To be implemented"
+                //PercentCompleted = 0
                 })
             | None -> None
            
