@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Models\Composer.fs" />
     <Compile Include="Models\Piece.fs" />
+    <Compile Include="Services\ComposersService.fs" />
     <Compile Include="Services\PiecesService.fs" />
   </ItemGroup>
 

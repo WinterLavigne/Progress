@@ -1,4 +1,4 @@
-module Tests
+module PiecesTests
 
     open System
     open Xunit
@@ -14,7 +14,7 @@ module Tests
     open FSharp.Control.Tasks.V2.ContextInsensitive
     open Xunit
     open Progress.Business
-    open Business.Models
+    open Business.Models.Pieces
     open Giraffe
     open Newtonsoft.Json
     open System.Text

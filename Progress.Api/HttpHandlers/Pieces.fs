@@ -1,13 +1,13 @@
 namespace Progress.Api
 
-module HttpHandlers =
+module HttpHandlersPieces =
 
     open Microsoft.AspNetCore.Http
     open FSharp.Control.Tasks.V2.ContextInsensitive
     open Giraffe
     open Progress.Business
     open System
-    open Business.Models
+    open Business.Models.Pieces
 
     let handleGetPieces =
         fun (next : HttpFunc) (ctx : HttpContext) ->

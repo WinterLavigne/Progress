@@ -4,9 +4,9 @@ open System
 open Progress.Repository
 
 type IPiecesService =
-    abstract member GetAll: Business.Models.GetPiece list
-    abstract member Get: Guid -> Business.Models.GetPiece option
-    abstract member Add: Business.Models.AddPiece -> Business.Models.GetPiece option
+    abstract member GetAll: Business.Models.Pieces.GetPiece list
+    abstract member Get: Guid -> Business.Models.Pieces.GetPiece option
+    abstract member Add: Business.Models.Pieces.AddPiece -> Business.Models.Pieces.GetPiece option
 
 type PiecesService(repository: IPiecesRepository) = 
     

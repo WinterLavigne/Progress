@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Models\Composer.fs" />
     <Compile Include="Models\Piece.fs" />
-    <Compile Include="PiecesRepository.fs" />
+    <Compile Include="Repositories\ComposersRepository.fs" />
+    <Compile Include="Repositories\PiecesRepository.fs" />
   </ItemGroup>
 
   <ItemGroup>

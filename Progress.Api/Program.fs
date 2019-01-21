@@ -7,10 +7,8 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open Progress.Api.HttpHandlers
 open Progress.Business
 open Giraffe
-open Progress.Repository
 open Progress.Context
 open Microsoft.EntityFrameworkCore
 open System.Configuration
@@ -19,6 +17,10 @@ open System.Linq
 open FsConfig
 open System.IO
 open FSharp.Data
+
+open Progress.Api.HttpHandlersPieces
+open Progress.Api.HttpHandlersComposers
+
 
 // ---------------------------------
 // Web app
@@ -33,9 +35,12 @@ let webApp =
                     route  "/" >=> text "index"
                     route "/pieces" >=> handleGetPieces
                     routef "/pieces/%O" handleGetPiece
+                    route "/composers" >=> handleGetComposers
+                    //routef "/composers/%O" handleGetPiece
                 ]
                 POST >=> choose [
                     route "/pieces" >=> handleAddPiece
+                    //route "/composers" >=> handleAddComposer
                 ]
             ])
         setStatusCode 404 >=> text "Not Found" ]
@@ -77,6 +82,8 @@ let configureServices (services : IServiceCollection) =
     let conn = content.ConnectionString
 
     services.AddDbContext<ProgressContext>(fun options -> options.UseSqlServer(conn) |> ignore) |> ignore
+    services.AddScoped<IComposersRepository, IComposersRepository>() |> ignore
+    services.AddScoped<IComposersService, ComposersService>() |> ignore
     services.AddScoped<IPiecesRepository, PiecesRepository>() |> ignore
     services.AddScoped<IPiecesService, PiecesService>() |> ignore
     services.AddCors()    |> ignore

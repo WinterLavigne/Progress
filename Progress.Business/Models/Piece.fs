@@ -1,4 +1,4 @@
-﻿namespace Business.Models
+﻿namespace Business.Models.Pieces
 
 open System
 
