@@ -5,8 +5,8 @@ open Progress.Repository
 
 type IComposersService =
     abstract member GetAll: Business.Models.Composers.GetComposer list
-    //abstract member Get: Guid -> Business.Models.GetPiece option
-    //abstract member Add: Business.Models.AddPiece -> Business.Models.GetPiece option
+    abstract member Get: Guid -> Business.Models.Composers.GetComposer option
+    abstract member Add: Business.Models.Composers.AddComposer -> Business.Models.Composers.GetComposer option
 
 //type ComposersService(repository: IComposersRepository) = 
 type ComposersService() = 
@@ -20,7 +20,7 @@ type ComposersService() =
              //       //Composer = "To implement"
              //       //PercentCompleted = 0
              //   }) 
-        //member __.Get id = 
+        member __.Get id = None
         //    let result = repository.Get id
         //    match result with
         //    | Some x -> Some({
@@ -30,7 +30,7 @@ type ComposersService() =
         //        //PercentCompleted = 0
         //        })
         //    | None -> None
-        //member __.Add newPiece = 
+        member __.Add newComposer = None
         //    let result = repository.Add {
         //        Name = newPiece.Name
         //        }

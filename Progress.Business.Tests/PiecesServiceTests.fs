@@ -12,7 +12,7 @@ type MockPiecesRepository() =
     let mutable adds = 0
     let mutable getAlls = 0
     let mutable gets = 0
-    let db = [
+    let db: (Progress.Repository.GetPiece list) = [
             {
                 Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e8")
                 Name = "Test Name 1"
@@ -33,7 +33,7 @@ type MockPiecesRepository() =
     interface IPiecesRepository with
         member __.GetAll = db
         member __.Get id = 
-            let list = List.filter (fun x -> x.Id.Equals(id)) db
+            let list = db |> List.filter (fun x -> x.Id.Equals(id)) 
             match list with
             | [] -> None
             | l -> Some(List.head l)

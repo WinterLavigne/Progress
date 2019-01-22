@@ -20,6 +20,7 @@ open FSharp.Data
 
 open Progress.Api.HttpHandlersPieces
 open Progress.Api.HttpHandlersComposers
+open Progress.Repository
 
 
 // ---------------------------------
@@ -36,11 +37,11 @@ let webApp =
                     route "/pieces" >=> handleGetPieces
                     routef "/pieces/%O" handleGetPiece
                     route "/composers" >=> handleGetComposers
-                    //routef "/composers/%O" handleGetPiece
+                    routef "/composers/%O" handleGetComposer
                 ]
                 POST >=> choose [
                     route "/pieces" >=> handleAddPiece
-                    //route "/composers" >=> handleAddComposer
+                    route "/composers" >=> handleAddComposer
                 ]
             ])
         setStatusCode 404 >=> text "Not Found" ]

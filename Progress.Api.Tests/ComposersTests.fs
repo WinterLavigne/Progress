@@ -20,37 +20,29 @@ module ComposersTests
     open System.Text
 
     type TestComposersService() = 
-    
-        interface IComposersService with
-            member __.GetAll = [
+        let db = [
                 {
                     Id = Guid("00000000-0000-0000-0000-000000000001")
-                    Name = "Test Name 1";
-                    //Composer = "Test Composer 1";
-                    //PercentCompleted = 0
+                    Name = "Composer Name 1";
                 }
                 {
                     Id = Guid("00000000-0000-0000-0000-000000000002")
-                    Name = "Test Name 2";
-                    //Composer = "Test Composer 2";
-                    //PercentCompleted = 0
+                    Name = "Composer Name 2";
                 }
                 ]
-            //member __.Get id = 
-            //    if (id.Equals(Guid("00000000-0000-0000-0000-000000000003")))
-            //    then Some  {
-            //        Id = Guid("00000000-0000-0000-0000-000000000003")
-            //        Name = "Test Name 1";
-            //        //Composer = "Test Composer 1";
-            //        //PercentCompleted = 0
-            //        }
-            //    else None
-            //member __.Add newPiece = Some ({ 
-            //    Id = Guid("00000000-0000-0000-0000-000000000004")
-            //    Name = newPiece.Name
-            //    //Composer = "To be implemented"
-            //    //PercentCompleted = 0
-            //    })
+        interface IComposersService with
+            member __.GetAll = db
+            member __.Get id = 
+                let result = db |> List.filter (fun x -> x.Id.Equals(id))
+                match result with
+                | [] -> None
+                | _ -> Some(result |> List.head)
+            member __.Add newComposer = Some ({ 
+                Id = Guid("00000000-0000-0000-0000-000000000004")
+                Name = newComposer.Name
+                //Composer = "To be implemented"
+                //PercentCompleted = 0
+                })
 
     let configureTestServices (services : IServiceCollection) =
         services.AddTransient<IComposersService, TestComposersService>() |> ignore
@@ -95,47 +87,47 @@ module ComposersTests
             Assert.Equal("[{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Composer Name 1\"},{\"id\":\"00000000-0000-0000-0000-000000000002\",\"name\":\"Composer Name 2\"}]", content)
         }
 
-    //[<Fact>]
-    //let ``Get Piece returns NoContent`` () =
-    //    task {
-    //        use server = new TestServer(createHost())
-    //        use client = server.CreateClient()
-    //        let! response = get client "/api/pieces/54cc3236-1ff6-407a-bb47-34fe729958e0"
-    //        let! content =
-    //            response
-    //            |> isStatus HttpStatusCode.NoContent
-    //            |> readText
+    [<Fact>]
+    let ``Get Composer returns NoContent`` () =
+        task {
+            use server = new TestServer(createHost())
+            use client = server.CreateClient()
+            let! response = get client "/api/composers/54cc3236-1ff6-407a-bb47-34fe729958e0"
+            let! content =
+                response
+                |> isStatus HttpStatusCode.NoContent
+                |> readText
         
-    //        Assert.Equal("", content)
-    //    }
+            Assert.Equal("", content)
+        }
 
-    //[<Fact>]
-    //let ``Get Piece returns Piece`` () =
-    //    task {
-    //        use server = new TestServer(createHost())
-    //        use client = server.CreateClient()
-    //        let! response = get client "/api/pieces/00000000-0000-0000-0000-000000000003"
-    //        let! content =
-    //            response
-    //            |> isStatus HttpStatusCode.OK
-    //            |> readText
+    [<Fact>]
+    let ``Get Composer returns GetComposer`` () =
+        task {
+            use server = new TestServer(createHost())
+            use client = server.CreateClient()
+            let! response = get client "/api/composers/00000000-0000-0000-0000-000000000001"
+            let! content =
+                response
+                |> isStatus HttpStatusCode.OK
+                |> readText
         
-    //        Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000003\",\"name\":\"Test Name 1\"}", content)
-    //    }
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Composer Name 1\"}", content)
+        }
 
-    //[<Fact>]
-    //let ``Add Piece returns Piece`` () =
-    //    task {
-    //        let newPiece = {
-    //                Name = "Some Name"
-    //            }
-    //        use server = new TestServer(createHost())
-    //        use client = server.CreateClient()
-    //        let! response = post client "/api/pieces" newPiece
-    //        let! content =
-    //            response
-    //            |> isStatus HttpStatusCode.Created
-    //            |> readText
+    [<Fact>]
+    let ``Add Composer returns Composer`` () =
+        task {
+            let newComposer = {
+                    Name = "Some Composer"
+                }
+            use server = new TestServer(createHost())
+            use client = server.CreateClient()
+            let! response = post client "/api/composers" newComposer
+            let! content =
+                response
+                |> isStatus HttpStatusCode.Created
+                |> readText
         
-    //        Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000004\",\"name\":\"Some Name\"}", content)
-    //    }
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000004\",\"name\":\"Some Composer\"}", content)
+        }

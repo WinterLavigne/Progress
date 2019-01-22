@@ -11,7 +11,7 @@ type IComposersRepository =
     //abstract Get: Guid -> GetPiece option
     //abstract Add: AddPiece -> GetPiece option
 
-type PiecesRepository(context: ProgressContext) =
+type ComposersRepository(context: ProgressContext) =
     
     interface IComposersRepository with
         member __.GetAll = []
