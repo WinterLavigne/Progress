@@ -20,3 +20,9 @@ type ProgressContext =
         with get() = x.pieces 
         and set v = x.pieces <- v
 
+
+    [<DefaultValue>]
+    val mutable composers:DbSet<Composer>
+    member x.Composers 
+        with get() = x.composers 
+        and set v = x.composers <- v

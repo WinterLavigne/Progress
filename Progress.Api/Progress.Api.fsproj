@@ -6,6 +6,7 @@
     <AssemblyName>Progress.Api</AssemblyName>
     <OutputType>Exe</OutputType>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,17 +17,20 @@
     <Content Include="appsettings.winter.example.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="Models\PieceOverview.fs" />
     <Compile Include="HttpHandlers\Pieces.fs" />
     <Compile Include="HttpHandlers\Composers.fs" />
     <Content Include="appsettings.winter.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="Program.fs" />
+    <None Include="Dockerfile" />
     <None Include="web.config" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="FsConfig" Version="2.0.2" />
     <PackageReference Include="FSharp.Data" Version="3.0.0" />
     <PackageReference Include="Giraffe" Version="3.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
     <PackageReference Include="TaskBuilder.fs" Version="2.1.*" />
     <ProjectReference Include="..\Progress.Business\Progress.Business.fsproj" />
     <ProjectReference Include="..\Progress.Domain\Progress.Domain.fsproj" />

@@ -3,6 +3,7 @@ module Progress.Api.App
 open System
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
+open Microsoft.AspNetCore.Cors
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
@@ -65,13 +66,20 @@ let configureCors (builder : CorsPolicyBuilder) =
            |> ignore
 
 let configureApp (app : IApplicationBuilder) =
-    let env = app.ApplicationServices.GetService<IHostingEnvironment>()
-    (match env.IsDevelopment() with
-    | true  -> app.UseDeveloperExceptionPage()
-    | false -> app.UseGiraffeErrorHandler errorHandler)
-        .UseHttpsRedirection()
-        .UseCors(configureCors)
-        .UseGiraffe(webApp)
+    //app.UseGiraffeErrorHandler errorHandler
+    app.UseStaticFiles() |> ignore
+    app.UseAuthentication() |> ignore
+    app.UseCors(new Action<_>(fun (b: Infrastructure.CorsPolicyBuilder) -> b.AllowAnyHeader() |> ignore; b.AllowAnyMethod() |> ignore; b.AllowAnyOrigin() |> ignore)) |> ignore
+    app.UseGiraffe webApp
+
+//let configureApp (app : IApplicationBuilder) =
+//    let env = app.ApplicationServices.GetService<IHostingEnvironment>()
+//    (match env.IsDevelopment() with
+//    | true  -> app.UseDeveloperExceptionPage()
+//    | false -> app.UseGiraffeErrorHandler errorHandler)
+//        .UseHttpsRedirection()
+//        .UseCors(configureCors)
+//        .UseGiraffe(webApp)
 
 [<Literal>]
 let appSettingsFile = "./appsettings.winter.json" // this should be your own appsettings file!!!
@@ -83,7 +91,7 @@ let configureServices (services : IServiceCollection) =
     let conn = content.ConnectionString
 
     services.AddDbContext<ProgressContext>(fun options -> options.UseSqlServer(conn) |> ignore) |> ignore
-    services.AddScoped<IComposersRepository, IComposersRepository>() |> ignore
+    services.AddScoped<IComposersRepository, ComposersRepository>() |> ignore
     services.AddScoped<IComposersService, ComposersService>() |> ignore
     services.AddScoped<IPiecesRepository, PiecesRepository>() |> ignore
     services.AddScoped<IPiecesService, PiecesService>() |> ignore

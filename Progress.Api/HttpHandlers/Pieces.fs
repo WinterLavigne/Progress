@@ -8,12 +8,18 @@ module HttpHandlersPieces =
     open Progress.Business
     open System
     open Business.Models.Pieces
+    open Api.Models
 
     let handleGetPieces =
         fun (next : HttpFunc) (ctx : HttpContext) ->
             task {
                 let service = ctx.GetService<IPiecesService>()
-                let result = List.toArray service.GetAll
+                let result = service.GetAll |> List.map (fun x -> {
+                    Id = x.Id
+                    Name = x.Name
+                    Composer = "To implement"
+                    PercentCompleted = 100
+                }) 
                 
                 return! Successful.OK result next ctx
             }
