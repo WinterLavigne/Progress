@@ -59,9 +59,15 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="Users" />
+    <Folder Include="Keys" />
+    <Folder Include="Defaults" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\Piece.sql" />
+    <Build Include="Tables\Pieces.sql" />
+    <Build Include="Tables\Composers.sql" />
+    <Build Include="Keys\F_Pieces_Composers.sql" />
+    <Build Include="Defaults\D_Pieces_Created.sql" />
+    <Build Include="Defaults\D_Composers_Created.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Progress.Database.publish.xml" />

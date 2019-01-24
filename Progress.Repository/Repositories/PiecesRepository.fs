@@ -16,7 +16,7 @@ exception Error of string
 type PiecesRepository(context: ProgressContext) =
     
     interface IPiecesRepository with
-        member __.GetAll = context.Pieces.AsNoTracking() |> Seq.toList |> List.map (fun x -> 
+        member __.GetAll = context.Pieces.Include(fun x -> x.Composer).AsNoTracking() |> Seq.toList |> List.map (fun x -> 
                 {
                     Id = x.Id
                     Name = x.Name
@@ -32,6 +32,7 @@ type PiecesRepository(context: ProgressContext) =
                     Id = Guid.Empty
                     Name = piece.Name
                     Created = DateTime.MinValue
+                    Composer = None
                     }) 
                 context.SaveChanges() |> ignore
                 Some({

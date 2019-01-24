@@ -9,6 +9,7 @@ type public Piece = {
     [<DatabaseGenerated(DatabaseGeneratedOption.Identity)>] Id : Guid
     [<DatabaseGenerated(DatabaseGeneratedOption.Computed)>] Created : DateTime
     Name: string
+    [<ForeignKey("Composer")>] Composer: Option<Composer>
     
    
  }

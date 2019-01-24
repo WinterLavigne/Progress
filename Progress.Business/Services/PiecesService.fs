@@ -2,6 +2,7 @@
 
 open System
 open Progress.Repository
+open Progress.Domain
 
 type IPiecesService =
     abstract member GetAll: Business.Models.Pieces.GetPiece list
@@ -16,17 +17,22 @@ type PiecesService(repository: IPiecesRepository) =
              repository.GetAll |> List.map (fun x -> {
                     Id = x.Id
                     Name = x.Name
-                    //Composer = "To implement"
-                    //PercentCompleted = 0
-                }) 
+                    Composer = {
+                        Id = Guid.Empty
+                        Name = "TBD"
+                        }
+                })
+
         member __.Get id = 
             let result = repository.Get id
             match result with
             | Some x -> Some({
                 Id = x.Id
                 Name = x.Name
-                //Composer = "To implement"
-                //PercentCompleted = 0
+                Composer = {
+                        Id = Guid.Empty
+                        Name = "TBD"
+                        }
                 })
             | None -> None
         member __.Add newPiece = 
@@ -37,8 +43,10 @@ type PiecesService(repository: IPiecesRepository) =
             | Some x -> Some({
                 Id = x.Id
                 Name = x.Name
-                //Composer = "To be implemented"
-                //PercentCompleted = 0
+                Composer = {
+                        Id = Guid.Empty
+                        Name = "TBD"
+                        }
                 })
             | None -> None
            

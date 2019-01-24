@@ -17,13 +17,14 @@ let createInMemoryContext (name: string)=
                 Id = Guid("00000000-0000-0000-0000-000000000001")
                 Name = "Test Name 1"
                 Created = DateTime.Now
+                Composer = None
                 //Composer = "Test Composer 1"
             }) |> ignore
     context.Pieces.Add({
                 Id = Guid("00000000-0000-0000-0000-000000000002")
                 Name = "Test Name 2"
                 Created = DateTime.Now
-                //Composer = "Test Composer 2"
+                Composer = None
             })|> ignore
     context.SaveChanges() |> ignore
 

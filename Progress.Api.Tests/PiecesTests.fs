@@ -18,6 +18,7 @@ module PiecesTests
     open Giraffe
     open Newtonsoft.Json
     open System.Text
+    open Progress.Domain
 
     type TestPiecesService() = 
     
@@ -25,15 +26,21 @@ module PiecesTests
             member __.GetAll = [
                 {
                     Id = Guid("00000000-0000-0000-0000-000000000001")
-                    Name = "Test Name 1";
+                    Name = "Test Name 1"
+                    Composer = {
+                        Id = Guid.Empty
+                        Name = "TBD"
+                        }
                     //Composer = "Test Composer 1";
                     //PercentCompleted = 0
                 }
                 {
                     Id = Guid("00000000-0000-0000-0000-000000000002")
                     Name = "Test Name 2";
-                    //Composer = "Test Composer 2";
-                    //PercentCompleted = 0
+                    Composer = {
+                        Id = Guid.Empty
+                        Name = "TBD"
+                        }
                 }
                 ]
             member __.Get id = 
@@ -41,15 +48,19 @@ module PiecesTests
                 then Some  {
                     Id = Guid("00000000-0000-0000-0000-000000000003")
                     Name = "Test Name 1";
-                    //Composer = "Test Composer 1";
-                    //PercentCompleted = 0
+                    Composer = {
+                        Id = Guid.Empty
+                        Name = "TBD"
+                        }
                     }
                 else None
             member __.Add newPiece = Some ({ 
                 Id = Guid("00000000-0000-0000-0000-000000000004")
                 Name = newPiece.Name
-                //Composer = "To be implemented"
-                //PercentCompleted = 0
+                Composer = {
+                        Id = Guid.Empty
+                        Name = "TBD"
+                        }
                 })
 
     let configureTestServices (services : IServiceCollection) =
