@@ -117,7 +117,7 @@ module PiecesTests
                 |> isStatus HttpStatusCode.OK
                 |> readText
         
-            Assert.Equal("[{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Test Name 1\"},{\"id\":\"00000000-0000-0000-0000-000000000002\",\"name\":\"Test Name 2\"}]", content)
+            Assert.Equal("[{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Test Name 1\",\"composer\":\"To implement\",\"percentCompleted\":100},{\"id\":\"00000000-0000-0000-0000-000000000002\",\"name\":\"Test Name 2\",\"composer\":\"To implement\",\"percentCompleted\":100}]", content)
         }
 
     [<Fact>]
@@ -145,7 +145,7 @@ module PiecesTests
                 |> isStatus HttpStatusCode.OK
                 |> readText
         
-            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000003\",\"name\":\"Test Name 1\"}", content)
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000003\",\"name\":\"Test Name 1\",\"composer\":{\"id\":\"00000000-0000-0000-0000-000000000000\",\"name\":\"TBD\"}}", content)
         }
 
     [<Fact>]
@@ -162,5 +162,5 @@ module PiecesTests
                 |> isStatus HttpStatusCode.Created
                 |> readText
         
-            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000004\",\"name\":\"Some Name\"}", content)
+            Assert.Equal("{\"id\":\"00000000-0000-0000-0000-000000000004\",\"name\":\"Some Name\",\"composer\":{\"id\":\"00000000-0000-0000-0000-000000000000\",\"name\":\"TBD\"}}", content)
         }

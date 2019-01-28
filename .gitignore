@@ -7,6 +7,7 @@
 *.userosscache
 *.sln.docstates
 *.winter.json
+*.Winter.DataProvider.fs
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

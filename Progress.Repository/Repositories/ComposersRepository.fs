@@ -1,21 +1,24 @@
 ﻿namespace Progress.Repository
 
 open System
-open Progress.Domain
-open Progress.Context
-open Microsoft.EntityFrameworkCore
 open System.Linq
+open FSharp.Data.Sql
+
+
 
 type IComposersRepository =
     abstract GetAll: GetComposer list
     //abstract Get: Guid -> GetPiece option
     //abstract Add: AddPiece -> GetPiece option
 
-type ComposersRepository(context: ProgressContext) =
+
+type ComposersRepository() =
     
+    let ctx = sql.GetDataContext()
+    let composers = ctx.Dbo.Composers
+
     interface IComposersRepository with
-        member __.GetAll = 
-            context.Composers.AsNoTracking() |> Seq.toList |> List.map (fun x -> 
+        member __.GetAll = composers |> Seq.toList |> List.map (fun x -> 
                 {
                     Id = x.Id
                     Name = x.Name

@@ -5,7 +5,6 @@ open Xunit
 open Progress.Business
 open FSharp.Control.Tasks.V2
 open Progress.Repository
-open Microsoft.EntityFrameworkCore
 
 type MockPiecesRepository() =
     

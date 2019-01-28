@@ -10,7 +10,6 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 open Progress.Business
 open Giraffe
-open Progress.Context
 open Microsoft.EntityFrameworkCore
 open System.Configuration
 open Microsoft.Extensions.Configuration
@@ -68,7 +67,7 @@ let configureCors (builder : CorsPolicyBuilder) =
 let configureApp (app : IApplicationBuilder) =
     //app.UseGiraffeErrorHandler errorHandler
     app.UseStaticFiles() |> ignore
-    app.UseAuthentication() |> ignore
+    //app.UseAuthentication() |> ignore
     app.UseCors(new Action<_>(fun (b: Infrastructure.CorsPolicyBuilder) -> b.AllowAnyHeader() |> ignore; b.AllowAnyMethod() |> ignore; b.AllowAnyOrigin() |> ignore)) |> ignore
     app.UseGiraffe webApp
 
@@ -90,7 +89,6 @@ let configureServices (services : IServiceCollection) =
     let content = Sample.Parse(File.ReadAllText(appSettingsFile))
     let conn = content.ConnectionString
 
-    services.AddDbContext<ProgressContext>(fun options -> options.UseSqlServer(conn) |> ignore) |> ignore
     services.AddScoped<IComposersRepository, ComposersRepository>() |> ignore
     services.AddScoped<IComposersService, ComposersService>() |> ignore
     services.AddScoped<IPiecesRepository, PiecesRepository>() |> ignore

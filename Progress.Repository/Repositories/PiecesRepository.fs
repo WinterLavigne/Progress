@@ -2,9 +2,9 @@
 
 open System
 open Progress.Domain
-open Progress.Context
-open Microsoft.EntityFrameworkCore
-open System.Linq
+open FSharp.Data.Sql
+open FSharp.Data.Sql.Common
+open FSharp.Data.Sql.Runtime
 
 type IPiecesRepository =
     abstract GetAll: GetPiece list
@@ -13,31 +13,43 @@ type IPiecesRepository =
    
 exception Error of string   
 
-type PiecesRepository(context: ProgressContext) =
+type PiecesRepository() =
     
+    let ctx = sql.GetDataContext()
+    let pieces = ctx.Dbo.Pieces
+    
+    let getWithId id = 
+        query {
+            for p in pieces do
+                where (p.Id = id)
+                select {
+                    Id = p.Id
+                    Name = p.Name
+                }
+            }
+            |> Seq.toList
+
     interface IPiecesRepository with
-        member __.GetAll = context.Pieces.Include(fun x -> x.Composer).AsNoTracking() |> Seq.toList |> List.map (fun x -> 
+        member __.GetAll = pieces |> Seq.toList |> List.map (fun x -> 
                 {
                     Id = x.Id
                     Name = x.Name
                 })
         member __.Get id = 
-            context.Pieces.AsNoTracking().Where(fun x -> x.Id.Equals(id))  |> Seq.toList |> List.map (fun x -> {
-                Id = x.Id
-                Name = x.Name
-                })  |> Seq.tryHead        
+            let result = getWithId id
+
+            match result with
+            | [] -> None
+            | l -> Some(l |> Seq.head)
+            
         member __.Add piece = 
             try
-                let result = context.Pieces.Add({
-                    Id = Guid.Empty
-                    Name = piece.Name
-                    Created = DateTime.MinValue
-                    Composer = None
-                    }) 
-                context.SaveChanges() |> ignore
+                let result = pieces.Create()
+                result.Name <- piece.Name
+                ctx.SubmitUpdates()
                 Some({
-                    Id = result.Entity.Id
-                    Name = result.Entity.Name
+                    Id = result.Id
+                    Name = result.Name
                 })
             with
             | Error(str) -> printfn "Error1 %s" str ; None
