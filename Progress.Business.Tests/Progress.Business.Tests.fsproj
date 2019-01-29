@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ComposerServiceTests.fs" />
     <Compile Include="PiecesServiceTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

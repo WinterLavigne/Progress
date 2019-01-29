@@ -23,8 +23,8 @@ type PiecesRepository() =
             for p in pieces do
                 where (p.Id = id)
                 select {
-                    Id = p.Id
-                    Name = p.Name
+                    GetPiece.Id = p.Id
+                    GetPiece.Name = p.Name
                 }
             }
             |> Seq.toList

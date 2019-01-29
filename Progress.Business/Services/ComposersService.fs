@@ -8,7 +8,6 @@ type IComposersService =
     abstract member Get: Guid -> Business.Models.Composers.GetComposer option
     abstract member Add: Business.Models.Composers.AddComposer -> Business.Models.Composers.GetComposer option
 
-//type ComposersService(repository: IComposersRepository) = 
 type ComposersService(repository: IComposersRepository) = 
     
     interface IComposersService with
@@ -16,18 +15,17 @@ type ComposersService(repository: IComposersRepository) =
         member __.GetAll = 
              repository.GetAll |> List.map (fun x -> {
                     Id = x.Id
-                    Name = x.Name
+                    Name = x.ComposerName
                 }) 
-        member __.Get id = None
-        //    let result = repository.Get id
-        //    match result with
-        //    | Some x -> Some({
-        //        Id = x.Id
-        //        Name = x.Name
-        //        //Composer = "To implement"
-        //        //PercentCompleted = 0
-        //        })
-        //    | None -> None
+        member __.Get id =
+            let result = repository.Get id
+            
+            match result with
+            | Some x -> Some({
+                Id = x.Id
+                Name = x.ComposerName
+                })
+            | None -> None
         member __.Add newComposer = None
         //    let result = repository.Add {
         //        Name = newPiece.Name
