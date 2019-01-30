@@ -15,7 +15,7 @@ type ComposersService(repository: IComposersRepository) =
         member __.GetAll = 
              repository.GetAll |> List.map (fun x -> {
                     Id = x.Id
-                    Name = x.ComposerName
+                    Name = x.Name
                 }) 
         member __.Get id =
             let result = repository.Get id
@@ -23,21 +23,19 @@ type ComposersService(repository: IComposersRepository) =
             match result with
             | Some x -> Some({
                 Id = x.Id
-                Name = x.ComposerName
+                Name = x.Name
                 })
             | None -> None
-        member __.Add newComposer = None
-        //    let result = repository.Add {
-        //        Name = newPiece.Name
-        //        }
-        //    match result with
-        //    | Some x -> Some({
-        //        Id = x.Id
-        //        Name = x.Name
-        //        //Composer = "To be implemented"
-        //        //PercentCompleted = 0
-        //        })
-        //    | None -> None
+        member __.Add composer =
+            let result = repository.Add {
+                Name = composer.Name
+                }
+            match result with
+            | Some x -> Some({
+                Id = x.Id
+                Name = x.Name
+                })
+            | None -> None
            
             
 

@@ -10,8 +10,7 @@ type IPiecesRepository =
     abstract GetAll: GetPiece list
     abstract Get: Guid -> GetPiece option
     abstract Add: AddPiece -> GetPiece option
-   
-exception Error of string   
+
 
 type PiecesRepository() =
     

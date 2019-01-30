@@ -9,7 +9,7 @@ exception Error of string
 type IComposersRepository =
     abstract GetAll: GetComposer list
     abstract Get: Guid -> GetComposer option
-    abstract Add: AddPiece -> GetComposer option
+    abstract Add: AddComposer -> GetComposer option
 
 
 type ComposersRepository() =

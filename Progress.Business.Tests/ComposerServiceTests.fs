@@ -14,12 +14,12 @@ type MockComposersRepository() =
     let db: (Progress.Repository.GetComposer list) = [
             {
                 Id = Guid("00000000-0000-0000-0001-000000000000")
-                ComposerName = "Test Composer 1"
+                Name = "Test Composer 1"
                 //Composer = "Test Composer 1"
             }
             {
                 Id = Guid("00000000-0000-0000-0002-000000000000")
-                ComposerName = "Test Composer 2"
+                Name = "Test Composer 2"
                 //Composer = "Test Composer 2"
             }]
 
@@ -35,14 +35,13 @@ type MockComposersRepository() =
             let list = db |> List.filter (fun x -> x.Id.Equals(id)) 
             match list with
             | [] -> None
-            | l -> Some(List.head l)
-            
-        //member __.Add piece = 
-        //    adds <- adds + 1
-        //    Some({ 
-        //        Id = Guid.NewGuid()
-        //        Name = "From Repo"
-        //        }) 
+            | l -> Some(List.head l)   
+        member __.Add composer = 
+            adds <- adds + 1
+            Some({ 
+                Id = Guid.NewGuid()
+                Name = "From Repo"
+                }) 
 
 
 [<Fact>]
