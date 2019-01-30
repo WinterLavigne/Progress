@@ -9,7 +9,7 @@ type IPiecesService =
     abstract member Get: Guid -> Business.Models.Pieces.GetPiece option
     abstract member Add: Business.Models.Pieces.AddPiece -> Business.Models.Pieces.GetPiece option
 
-type PiecesService(repository: IPiecesRepository) = 
+type PiecesService(repository: IPiecesRepository, composersService: IComposersService) = 
     
     interface IPiecesService with
 
@@ -36,19 +36,27 @@ type PiecesService(repository: IPiecesRepository) =
                 })
             | None -> None
         member __.Add newPiece = 
-            let result = repository.Add {
-                Name = newPiece.Name
-                }
-            match result with
-            | Some x -> Some({
-                Id = x.Id
-                Name = x.Name
-                Composer = {
-                        Id = Guid.Empty
-                        Name = "TBD"
-                        }
+            let composer = composersService.Add({
+                Name = newPiece.Composer.Name
                 })
-            | None -> None
+            match composer with
+            | Some x -> 
+                let result = repository.Add {
+                    Name = newPiece.Name
+                    Composer = composer
+                    }
+                match result with
+                | Some x -> Some({
+                    Id = x.Id
+                    Name = x.Name
+                    Composer = {
+                            Id = Guid.Empty
+                            Name = "TBD"
+                            }
+                    })
+                | None -> None
+            | _ -> None
+            
            
             
 

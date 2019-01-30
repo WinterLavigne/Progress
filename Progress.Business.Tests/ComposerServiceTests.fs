@@ -11,21 +11,21 @@ type MockComposersRepository() =
     let mutable adds = 0
     let mutable getAlls = 0
     let mutable gets = 0
+    let mutable getByNames = 0
     let db: (Progress.Repository.GetComposer list) = [
             {
                 Id = Guid("00000000-0000-0000-0001-000000000000")
                 Name = "Test Composer 1"
-                //Composer = "Test Composer 1"
             }
             {
                 Id = Guid("00000000-0000-0000-0002-000000000000")
                 Name = "Test Composer 2"
-                //Composer = "Test Composer 2"
             }]
 
     member __.Adds = adds    
     member __.GetAlls = getAlls
     member __.Gets = gets
+    member __.GetByNames = getByNames
 
     
 
@@ -40,8 +40,14 @@ type MockComposersRepository() =
             adds <- adds + 1
             Some({ 
                 Id = Guid.NewGuid()
-                Name = "From Repo"
+                Name = composer.Name
                 }) 
+        member __.GetByName name = 
+            getByNames <- getByNames + 1
+            let list = db |> List.filter (fun x -> x.Name.Equals(name)) 
+            match list with
+            | [] -> None
+            | l -> Some(List.head l)  
 
 
 [<Fact>]
@@ -75,7 +81,7 @@ let ``Get returns some when id does exist`` () =
         }
 
 [<Fact>]
-let ``Add returns new piece`` () =
+let ``Add returns new composer`` () =
     task {
             let repo = MockComposersRepository()
             let _sut = ComposersService(repo) :> IComposersService
@@ -83,6 +89,20 @@ let ``Add returns new piece`` () =
             let result = _sut.Add({Name = "Add returns new piece"})
             
             Assert.True(result.IsSome)
-            Assert.Equal("From Repo", result.Value.Name)
+            Assert.Equal("Add returns new piece", result.Value.Name)
             Assert.Equal(1, repo.Adds)
         }
+
+[<Fact>]
+let ``Add returns existing composer when composer exist`` () =
+    task {
+            let repo = MockComposersRepository()
+            let _sut = ComposersService(repo) :> IComposersService
+            
+            let result = _sut.Add({Name = "Test Composer 1"})
+            
+            Assert.True(result.IsSome)
+            Assert.Equal("Test Composer 1", result.Value.Name)
+            Assert.Equal(Guid("00000000-0000-0000-0001-000000000000"), result.Value.Id)
+            Assert.Equal(1, repo.GetByNames)
+        }  

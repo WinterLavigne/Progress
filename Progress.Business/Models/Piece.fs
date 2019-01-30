@@ -11,4 +11,5 @@ type public GetPiece = {
 
 type public AddPiece = {
     Name: string
+    Composer: GetComposer
     }

@@ -45,6 +45,14 @@ type MockPiecesRepository() =
                 }) 
 
 
+type MockComposersService() =
+   
+    interface IComposersService with
+        member __.GetAll = []
+        member __.Get id = None
+        member __.Add composer = None
+
+
 [<Fact>]
 let ``GetAll returns all pieces`` () =
     task {  
@@ -81,7 +89,13 @@ let ``Add returns new piece`` () =
             let repo = MockPiecesRepository()
             let _sut = PiecesService(repo) :> IPiecesService
 
-            let result = _sut.Add({Name = "Add returns new piece"})
+            let result = _sut.Add({
+                Name = "Add returns new piece"
+                Composer = {
+                    Id = Guid.Empty
+                    Name = "TBD"
+                    }
+                })
             
             Assert.True(result.IsSome)
             Assert.Equal("From Repo", result.Value.Name)

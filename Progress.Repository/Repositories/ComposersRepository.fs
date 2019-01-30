@@ -10,6 +10,7 @@ type IComposersRepository =
     abstract GetAll: GetComposer list
     abstract Get: Guid -> GetComposer option
     abstract Add: AddComposer -> GetComposer option
+    abstract GetByName: string -> GetComposer option
 
 
 type ComposersRepository() =
@@ -21,6 +22,17 @@ type ComposersRepository() =
         query {
             for p in composers do
                 where (p.Id = id)
+                select {
+                    GetComposer.Id = p.Id
+                    GetComposer.Name = p.Name
+                } 
+            }
+            |> Seq.toList
+
+    let getWithName name : (GetComposer list)= 
+        query {
+            for p in composers do
+                where (p.Name = name)
                 select {
                     GetComposer.Id = p.Id
                     GetComposer.Name = p.Name
@@ -51,4 +63,9 @@ type ComposersRepository() =
                 })
             with
             | Error(str) -> printfn "Error1 %s" str ; None
-            
+        member __.GetByName name = 
+            let result = getWithName name
+
+            match result with
+            | [] -> None
+            | l -> Some(l |> Seq.head)

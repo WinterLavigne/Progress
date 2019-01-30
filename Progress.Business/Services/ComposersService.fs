@@ -10,6 +10,18 @@ type IComposersService =
 
 type ComposersService(repository: IComposersRepository) = 
     
+    let getByName (name: string) = repository.GetByName name
+    let add (composer: Business.Models.Composers.AddComposer) : Business.Models.Composers.GetComposer option = 
+        let result = repository.Add {
+                Name = composer.Name
+                }
+        match result with
+        | Some x -> Some({
+            Id = x.Id
+            Name = x.Name
+            })
+        | None -> None
+
     interface IComposersService with
 
         member __.GetAll = 
@@ -27,15 +39,15 @@ type ComposersService(repository: IComposersRepository) =
                 })
             | None -> None
         member __.Add composer =
-            let result = repository.Add {
-                Name = composer.Name
-                }
-            match result with
+            let byName = getByName composer.Name
+            match byName with
             | Some x -> Some({
                 Id = x.Id
                 Name = x.Name
                 })
-            | None -> None
+            | _ -> add composer
+
+            
            
             
 
