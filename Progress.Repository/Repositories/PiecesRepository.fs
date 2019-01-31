@@ -1,10 +1,8 @@
 ﻿namespace Progress.Repository
 
 open System
-open Progress.Domain
 open FSharp.Data.Sql
 open FSharp.Data.Sql.Common
-open FSharp.Data.Sql.Runtime
 
 type IPiecesRepository =
     abstract GetAll: GetPiece list
@@ -17,23 +15,31 @@ type PiecesRepository() =
     let ctx = sql.GetDataContext()
     let pieces = ctx.Dbo.Pieces
     
+    let mapGetPiece (dbRecord:sql.dataContext.``dbo.PiecesEntity``) : GetPiece =
+        let composer = dbRecord.``dbo.Composers by Id`` |> Seq.head
+        { 
+            Id = dbRecord.Id
+            Name = dbRecord.Name
+            Composer = {
+                Id = composer.Id
+                Name = composer.Name
+                }
+        }
+
     let getWithId id = 
         query {
             for p in pieces do
                 where (p.Id = id)
-                select {
-                    GetPiece.Id = p.Id
-                    GetPiece.Name = p.Name
-                }
+                select p
             }
+            |> Seq.map (fun x -> mapGetPiece x)
             |> Seq.toList
 
     interface IPiecesRepository with
-        member __.GetAll = pieces |> Seq.toList |> List.map (fun x -> 
-                {
-                    Id = x.Id
-                    Name = x.Name
-                })
+        member __.GetAll = 
+            pieces 
+            |> Seq.toList 
+            |> List.map (fun x -> mapGetPiece x)
         member __.Get id = 
             let result = getWithId id
 
@@ -45,11 +51,9 @@ type PiecesRepository() =
             try
                 let result = pieces.Create()
                 result.Name <- piece.Name
+                result.Composer <- piece.Composer.Id
                 ctx.SubmitUpdates()
-                Some({
-                    Id = result.Id
-                    Name = result.Name
-                })
+                Some(mapGetPiece result)
             with
             | Error(str) -> printfn "Error1 %s" str ; None
             

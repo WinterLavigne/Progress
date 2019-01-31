@@ -18,7 +18,6 @@ module PiecesTests
     open Giraffe
     open Newtonsoft.Json
     open System.Text
-    open Progress.Domain
 
     type TestPiecesService() = 
     
@@ -152,7 +151,11 @@ module PiecesTests
     let ``Add Piece returns Piece`` () =
         task {
             let newPiece = {
-                    Name = "Some Name"
+                    AddPiece.Name = "Some Name"
+                    Composer = {
+                        Id = Guid.Empty
+                        Name = "Composer name"
+                        }
                 }
             use server = new TestServer(createHost())
             use client = server.CreateClient()

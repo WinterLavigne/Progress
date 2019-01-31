@@ -2,7 +2,6 @@
 
 open System
 open Progress.Repository
-open Progress.Domain
 
 type IPiecesService =
     abstract member GetAll: Business.Models.Pieces.GetPiece list
@@ -40,10 +39,13 @@ type PiecesService(repository: IPiecesRepository, composersService: IComposersSe
                 Name = newPiece.Composer.Name
                 })
             match composer with
-            | Some x -> 
+            | Some c -> 
                 let result = repository.Add {
                     Name = newPiece.Name
-                    Composer = composer
+                    Composer = {
+                        Id = c.Id
+                        Name = c.Name
+                        }
                     }
                 match result with
                 | Some x -> Some({
