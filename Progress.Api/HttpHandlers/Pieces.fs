@@ -17,7 +17,10 @@ module HttpHandlersPieces =
                 let result = service.GetAll |> List.map (fun x -> {
                     Id = x.Id
                     Name = x.Name
-                    Composer = "To implement"
+                    Composer = {
+                        ComposerOverview.Id = x.Composer.Id
+                        Name = x.Composer.Name
+                        }
                     PercentCompleted = 100
                 }) 
                 
@@ -32,7 +35,15 @@ module HttpHandlersPieces =
                 
                 return!
                     (match result with
-                    | Some r -> Successful.OK r
+                    | Some x -> Successful.OK {
+                            Id = x.Id
+                            Name = x.Name
+                            Composer = {
+                                ComposerOverview.Id = x.Composer.Id
+                                Name = x.Composer.Name
+                                }
+                            PercentCompleted = 100
+                        }
                     | None -> Successful.NO_CONTENT) next ctx
             }
 
@@ -45,7 +56,15 @@ module HttpHandlersPieces =
                 
                 return!
                     (match result with
-                    | Some r -> Successful.CREATED r
+                    | Some x -> Successful.CREATED {
+                            Id = x.Id
+                            Name = x.Name
+                            Composer = {
+                                ComposerOverview.Id = x.Composer.Id
+                                Name = x.Composer.Name
+                                }
+                            PercentCompleted = 100
+                        }
                     | None -> ServerErrors.INTERNAL_ERROR "Oops.") next ctx
             }
     

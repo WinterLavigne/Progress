@@ -10,6 +10,17 @@ type IPiecesService =
 
 type PiecesService(repository: IPiecesRepository, composersService: IComposersService) = 
     
+
+    let GetOrAddComposer (composer: Business.Models.Composers.GetComposer) =
+        let test = composersService.Get composer.Id
+        match test with
+        | Some _ -> test
+        | _ -> 
+            composersService.Add({
+                Name = composer.Name
+                })
+            
+
     interface IPiecesService with
 
         member __.GetAll = 
@@ -17,8 +28,8 @@ type PiecesService(repository: IPiecesRepository, composersService: IComposersSe
                     Id = x.Id
                     Name = x.Name
                     Composer = {
-                        Id = Guid.Empty
-                        Name = "TBD"
+                        Id = x.Composer.Id
+                        Name = x.Composer.Name
                         }
                 })
 
@@ -29,15 +40,14 @@ type PiecesService(repository: IPiecesRepository, composersService: IComposersSe
                 Id = x.Id
                 Name = x.Name
                 Composer = {
-                        Id = Guid.Empty
-                        Name = "TBD"
+                        Id = x.Composer.Id
+                        Name = x.Composer.Name
                         }
                 })
             | None -> None
         member __.Add newPiece = 
-            let composer = composersService.Add({
-                Name = newPiece.Composer.Name
-                })
+            let composer = GetOrAddComposer newPiece.Composer
+            
             match composer with
             | Some c -> 
                 let result = repository.Add {
@@ -52,8 +62,8 @@ type PiecesService(repository: IPiecesRepository, composersService: IComposersSe
                     Id = x.Id
                     Name = x.Name
                     Composer = {
-                            Id = Guid.Empty
-                            Name = "TBD"
+                            Id = x.Composer.Id
+                            Name = x.Composer.Name
                             }
                     })
                 | None -> None

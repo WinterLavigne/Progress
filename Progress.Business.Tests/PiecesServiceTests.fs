@@ -15,12 +15,18 @@ type MockPiecesRepository() =
             {
                 Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e8")
                 Name = "Test Name 1"
-                //Composer = "Test Composer 1"
+                Composer = {
+                    Id = Guid.Empty
+                    Name = "TBD"
+                    }
             }
             {
                 Id = Guid("54cc3236-1ff6-407a-bb47-34fe729958e1")
                 Name = "Test Name 2"
-                //Composer = "Test Composer 2"
+                Composer = {
+                    Id = Guid.Empty
+                    Name = "TBD"
+                    }
             }]
 
     member __.Adds = adds    
@@ -42,6 +48,10 @@ type MockPiecesRepository() =
             Some({ 
                 Id = Guid.NewGuid()
                 Name = piece.Name
+                Composer = {
+                    Id = Guid.Empty
+                    Name = "TBD"
+                    }
                 }) 
 
 
